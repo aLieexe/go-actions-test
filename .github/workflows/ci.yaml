@@ -23,3 +23,9 @@ jobs:
       
       - name: Display Go version
         run: go version
+
+      - name: Install dependencies
+        run: |
+          go mod tidy
+          go mod download
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4
