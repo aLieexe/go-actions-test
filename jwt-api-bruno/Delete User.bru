@@ -1,0 +1,17 @@
+meta {
+  name: Delete User
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{domain}}/user
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "sigma@gmail.com"
+  }
+}

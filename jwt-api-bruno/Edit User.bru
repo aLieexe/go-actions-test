@@ -1,0 +1,19 @@
+meta {
+  name: Edit User
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{domain}}/user
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "alie",
+    "password": "1234",
+    "email": "chanegd-sigma@gmail.com"
+  }
+}

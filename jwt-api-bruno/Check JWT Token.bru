@@ -1,0 +1,15 @@
+meta {
+  name: Check JWT Token
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{domain}}/auth/check
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

@@ -1,0 +1,7 @@
+export PORT=6969
+export DATABASE_URL=postgres://dev:12345678@localhost:5432/test?sslmode=disable
+export ACCESS_TOKEN_TTL=600
+export REFRESH_TOKEN_TTL=1800
+
+export ACCESS_TOKEN_SECRET= tsukatsuki-rio123
+export REFRESH_TOKEN_SECRET= tsukatsuki-rio123

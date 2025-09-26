@@ -1,0 +1,24 @@
+meta {
+  name: Login User
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{domain}}/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "sigma@gmail.com",
+    "password": "1234"
+  }
+  
+}
+
+script:post-response {
+  bru.setEnvVar("accessToken", res.body.access_token);
+  bru.setEnvVar("refreshToken", res.body.refresh_token);
+}
