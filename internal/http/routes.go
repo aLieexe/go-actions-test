@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"jwt-golang/internal/auth"
 	"jwt-golang/internal/common"
 	"jwt-golang/internal/middlewares"
@@ -36,7 +37,8 @@ func Routes(handlers *Handlers, authManager auth.AuthManager, app *common.Applic
 	})
 
 	router.Get("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
-		app.WriteJSON(w, 200, common.Envelope{"status": "success"}, nil)
+		err := app.WriteJSON(w, 200, common.Envelope{"status": "success"}, nil)
+		fmt.Println(err)
 	})
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {

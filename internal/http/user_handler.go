@@ -40,9 +40,13 @@ func validateUserInput(user models.PostUser) error {
 
 func (h *UserHandler) PostUser(w http.ResponseWriter, r *http.Request) {
 	userInput := models.PostUser{}
-	h.app.ReadJSON(w, r, &userInput)
+	err := h.app.ReadJSON(w, r, &userInput)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
 
-	err := validateUserInput(userInput)
+	err = validateUserInput(userInput)
 	if err != nil {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
@@ -54,7 +58,11 @@ func (h *UserHandler) PostUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.app.WriteJSON(w, http.StatusOK, common.Envelope{"user_id": userId}, nil)
+	err = h.app.WriteJSON(w, http.StatusOK, common.Envelope{"user_id": userId}, nil)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
 
 }
 
@@ -65,12 +73,21 @@ func (h *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.app.WriteJSON(w, http.StatusOK, common.Envelope{"data": users}, nil)
+	err = h.app.WriteJSON(w, http.StatusOK, common.Envelope{"data": users}, nil)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
 }
 
 func (h *UserHandler) EditUser(w http.ResponseWriter, r *http.Request) {
 	userInput := models.EditUser{}
-	h.app.ReadJSON(w, r, &userInput)
+	err := h.app.ReadJSON(w, r, &userInput)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	currentUserId, ok := auth.GetUserIdFromContext(r.Context())
 	if !ok {
@@ -78,31 +95,50 @@ func (h *UserHandler) EditUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := h.userModel.EditUser(r.Context(), userInput, currentUserId)
+	err = h.userModel.EditUser(r.Context(), userInput, currentUserId)
 	if err != nil {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	h.app.WriteJSON(w, http.StatusOK, common.Envelope{"status": "success"}, nil)
+	err = h.app.WriteJSON(w, http.StatusOK, common.Envelope{"status": "success"}, nil)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
 }
 
 func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email string `json:"email"`
 	}
-	h.app.ReadJSON(w, r, &input)
-
-	err := h.userModel.DeleteUser(r.Context(), input.Email)
+	err := h.app.ReadJSON(w, r, &input)
 	if err != nil {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	h.app.WriteJSON(w, http.StatusOK, common.Envelope{"status": "success"}, nil)
+	err = h.userModel.DeleteUser(r.Context(), input.Email)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.app.WriteJSON(w, http.StatusOK, common.Envelope{"status": "success"}, nil)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
 }
 
 func (h *UserHandler) CheckCookie(w http.ResponseWriter, r *http.Request) {
 	envelope := common.Envelope{"data": r.Cookies()}
-	h.app.WriteJSON(w, http.StatusOK, envelope, nil)
+	err := h.app.WriteJSON(w, http.StatusOK, envelope, nil)
+	if err != nil {
+		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
 }

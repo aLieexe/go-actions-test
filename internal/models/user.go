@@ -64,7 +64,12 @@ func (m *UserModel) Insert(ctx context.Context, userInput PostUser) (string, err
 	if err != nil {
 		return "", err
 	}
-	defer tx.Rollback(ctx)
+	defer func() {
+		if rbErr := tx.Rollback(ctx); rbErr != nil && rbErr != pgx.ErrTxClosed {
+			// log rollback error (don’t return it, or you’ll hide the real one)
+			fmt.Printf("rollback failed: %v\n", rbErr)
+		}
+	}()
 
 	id := uuid.New()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userInput.Password), 12)

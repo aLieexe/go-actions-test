@@ -6,24 +6,20 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
-	"strconv"
 	"strings"
-
-	"github.com/go-chi/chi/v5"
 )
 
 type Envelope map[string]any
 
-func (app *Application) readIdParam(r *http.Request) (int64, error) {
-	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-	if err != nil || id < 1 {
-		return 0, errors.New("invalid id parameter")
-	}
+// func (app *Application) readIdParam(r *http.Request) (int64, error) {
+// 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+// 	if err != nil || id < 1 {
+// 		return 0, errors.New("invalid id parameter")
+// 	}
 
-	return id, nil
-}
+// 	return id, nil
+// }
 
 func (app *Application) WriteJSON(w http.ResponseWriter, status int, data Envelope, headers http.Header) error {
 	jsonData, err := json.Marshal(data)
@@ -40,8 +36,8 @@ func (app *Application) WriteJSON(w http.ResponseWriter, status int, data Envelo
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	w.Write(jsonData)
-	return nil
+	_, err = w.Write(jsonData)
+	return err
 }
 
 // dst should be an address btw
@@ -108,23 +104,23 @@ func (app *Application) ReadJSON(w http.ResponseWriter, r *http.Request, dst any
 	return nil
 }
 
-func (app *Application) readString(queryString url.Values, key string, defaultVal string) string {
-	s := queryString.Get(key)
-	if s == "" {
-		return defaultVal
-	}
+// func (app *Application) readString(queryString url.Values, key string, defaultVal string) string {
+// 	s := queryString.Get(key)
+// 	if s == "" {
+// 		return defaultVal
+// 	}
 
-	return s
-}
+// 	return s
+// }
 
-func (app *Application) readCSV(queryString url.Values, key string, defaultVal []string) []string {
-	csv := queryString.Get(key)
-	if csv == "" {
-		return defaultVal
-	}
+// func (app *Application) readCSV(queryString url.Values, key string, defaultVal []string) []string {
+// 	csv := queryString.Get(key)
+// 	if csv == "" {
+// 		return defaultVal
+// 	}
 
-	return strings.Split(csv, ",")
-}
+// 	return strings.Split(csv, ",")
+// }
 
 func GetEnv(key string, defaultVal ...string) string {
 	if value, ok := os.LookupEnv(key); ok {
