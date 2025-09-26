@@ -11,7 +11,7 @@ on:
 
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,4 +28,13 @@ jobs:
         run: |
           go mod tidy
           go mod download
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest
+          args: --timeout=5m
+
