@@ -2,12 +2,12 @@ name: continous integration
 on:
   push:
     branches: 
-      - master
+      - main
       - fix/*
       - feat/*
   pull_request:
     branches:
-      - master
+      - main
 
 
 jobs:
