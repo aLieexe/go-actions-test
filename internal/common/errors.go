@@ -39,5 +39,4 @@ func (app *Application) ErrorResponse(w http.ResponseWriter, r *http.Request, st
 		app.logError(r, err)
 		w.WriteHeader(500)
 	}
-
 }

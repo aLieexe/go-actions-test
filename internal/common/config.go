@@ -34,7 +34,7 @@ func Load(envPath string) (*Config, error) {
 		return nil, errors.New("REFRESH_TOKEN_TTL have to be an int")
 	}
 
-	//extra validation
+	// extra validation
 	if dbUrl == "" {
 		return nil, errors.New("DATABASE_URL is required")
 	}

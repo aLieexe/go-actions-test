@@ -23,7 +23,6 @@ type Envelope map[string]any
 
 func (app *Application) WriteJSON(w http.ResponseWriter, status int, data Envelope, headers http.Header) error {
 	jsonData, err := json.Marshal(data)
-
 	if err != nil {
 		return err
 	}
@@ -42,7 +41,6 @@ func (app *Application) WriteJSON(w http.ResponseWriter, status int, data Envelo
 
 // dst should be an address btw
 func (app *Application) ReadJSON(w http.ResponseWriter, r *http.Request, dst any) error {
-
 	maxBytes := 1_048_576
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 
@@ -61,15 +59,15 @@ func (app *Application) ReadJSON(w http.ResponseWriter, r *http.Request, dst any
 		case errors.As(err, &syntaxError):
 			return fmt.Errorf("body contains badly-formed JSON (at characted: %d)", syntaxError.Offset)
 
-		//occur when the JSON value is the wrong type for the target destination
+		// occur when the JSON value is the wrong type for the target destination
 		case errors.As(err, &unmarshalTypeError):
 			if unmarshalTypeError.Field == "" {
 				return fmt.Errorf("body contains incorrect JSON type for field %q", unmarshalTypeError.Field)
 			}
 			return fmt.Errorf("body contains incorrect JSON type (at character %d)", unmarshalTypeError.Offset)
 
-		//occur when we pass something that is not a non nil pointer to decode.
-		//i believe the reason we panic is because its more of a dev error
+		// occur when we pass something that is not a non nil pointer to decode.
+		// i believe the reason we panic is because its more of a dev error
 		// rather than user err
 		case errors.As(err, &invalidUnmarshalError):
 			panic(err)
@@ -96,7 +94,7 @@ func (app *Application) ReadJSON(w http.ResponseWriter, r *http.Request, dst any
 
 	// remember dumass, struct{} is only the struct. U need another {} to initialize it
 	// we essentially try to decode again, but here we expect io.EOF instead
-	err = dec.Decode(&struct{}{})
+	dec.Decode(&struct{}{})
 	if !errors.Is(err, io.EOF) {
 		return errors.New("body must only contain a single JSON value")
 	}

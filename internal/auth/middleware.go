@@ -2,14 +2,17 @@ package auth
 
 import (
 	"context"
-	"jwt-golang/internal/common"
 	"net/http"
+
+	"jwt-golang/internal/common"
 )
 
 type ContextKey string
 
-const userContextKey ContextKey = "context"
-const userIdContextKey ContextKey = "userId"
+const (
+	userContextKey   ContextKey = "context"
+	userIdContextKey ContextKey = "userId"
+)
 
 // should just get the JWT data and bind it to the contextd
 func JwtMiddleware(authManager AuthManager, app *common.Application) func(next http.Handler) http.Handler {
@@ -48,7 +51,6 @@ func JwtMiddleware(authManager AuthManager, app *common.Application) func(next h
 			app.Logger.Debug("user authenticated", "userId", claims.Subject, "email", claims.Email)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
-
 		})
 	}
 }

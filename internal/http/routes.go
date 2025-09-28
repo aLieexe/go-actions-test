@@ -19,14 +19,14 @@ func Routes(handlers *Handlers, authManager auth.AuthManager, app *common.Applic
 	router.Use(middlewares.RequestLogger(app))
 	router.Use(auth.JwtMiddleware(authManager, app))
 
-	//user
+	// user
 	router.Post("/user", handlers.User.PostUser)
 	router.Get("/user", handlers.User.GetAllUser)
 	router.Delete("/user", handlers.User.DeleteUser)
 	router.Put("/user", handlers.User.EditUser)
 	router.Get("/user/cookie", handlers.User.CheckCookie)
 
-	//auth
+	// auth
 	router.Post("/auth/login", handlers.Auth.UserLogin)
 	router.Post("/auth/refresh", handlers.Auth.RefreshToken)
 	router.Get("/auth/check", handlers.Auth.CheckJwt)

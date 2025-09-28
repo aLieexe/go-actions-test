@@ -9,7 +9,6 @@ import (
 func ConnectPostgres(DBURL string) (*pgxpool.Pool, error) {
 	stringConnection := DBURL
 	config, err := pgxpool.ParseConfig(stringConnection)
-
 	if err != nil {
 		return nil, err
 	}

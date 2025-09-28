@@ -20,7 +20,11 @@ type AuthHandler struct {
 	app         *common.Application
 }
 
-func NewAuthHandler(userModel models.UserModelInterface, authManager auth.AuthManager, app *common.Application) *AuthHandler {
+func NewAuthHandler(
+	userModel models.UserModelInterface,
+	authManager auth.AuthManager,
+	app *common.Application,
+) *AuthHandler {
 	return &AuthHandler{
 		userModel:   userModel,
 		authManager: authManager,
@@ -125,5 +129,4 @@ func (h *AuthHandler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusInternalServerError, err.Error())
 		return
 	}
-
 }

@@ -63,7 +63,6 @@ func (h *UserHandler) PostUser(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
-
 }
 
 func (h *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +77,6 @@ func (h *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
-
 }
 
 func (h *UserHandler) EditUser(w http.ResponseWriter, r *http.Request) {
@@ -106,7 +104,6 @@ func (h *UserHandler) EditUser(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
-
 }
 
 func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -130,7 +127,6 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
-
 }
 
 func (h *UserHandler) CheckCookie(w http.ResponseWriter, r *http.Request) {
@@ -140,5 +136,4 @@ func (h *UserHandler) CheckCookie(w http.ResponseWriter, r *http.Request) {
 		h.app.ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
 	}
-
 }

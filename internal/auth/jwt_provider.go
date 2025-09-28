@@ -4,9 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"jwt-golang/internal/models"
 	"strings"
 	"time"
+
+	"jwt-golang/internal/models"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -22,7 +23,12 @@ type CustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func NewJwtProvider(accessTokenSecret string, refreshTokenSecret string, accessTokenTTL time.Duration, refreshTokenTTL time.Duration) *JwtProvider {
+func NewJwtProvider(
+	accessTokenSecret string,
+	refreshTokenSecret string,
+	accessTokenTTL time.Duration,
+	refreshTokenTTL time.Duration,
+) *JwtProvider {
 	return &JwtProvider{
 		accessTokenSecret:  []byte(accessTokenSecret),
 		accessTokenTTL:     accessTokenTTL * time.Second,
@@ -93,7 +99,6 @@ func (p *JwtProvider) validateAccessToken(authorizationHeader string) error {
 		}
 		return p.accessTokenSecret, nil
 	})
-
 	if err != nil {
 		return fmt.Errorf("invalid token: %w", err)
 	}
@@ -112,7 +117,6 @@ func (p *JwtProvider) validateRefreshToken(refreshToken string) error {
 		}
 		return p.refreshTokenSecret, nil
 	})
-
 	if err != nil {
 		return fmt.Errorf("invalid token: %w", err)
 	}
@@ -136,7 +140,6 @@ func (p *JwtProvider) extractClaims(tokenString string) (*CustomClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return p.accessTokenSecret, nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +155,6 @@ func (p *JwtProvider) extractUserIdFromRefreshToken(tokenString string) (string,
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return p.refreshTokenSecret, nil
 	})
-
 	if err != nil {
 		return "", err
 	}

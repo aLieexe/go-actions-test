@@ -28,13 +28,11 @@ type AuthProvider interface {
 
 func (m *AuthManager) GenerateTokens(ctx context.Context, user *models.Users) ([]string, error) {
 	accessToken, err := m.Provider.GenerateAccessToken(ctx, user)
-
 	if err != nil {
 		return nil, err
 	}
 
 	refreshToken, err := m.Provider.GenerateRefreshToken(ctx, user)
-
 	if err != nil {
 		return nil, err
 	}

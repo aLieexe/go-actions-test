@@ -65,7 +65,7 @@ func (m *UserModel) Insert(ctx context.Context, userInput PostUser) (string, err
 		return "", err
 	}
 	defer func() {
-		if rbErr := tx.Rollback(ctx); rbErr != nil && rbErr != pgx.ErrTxClosed {
+		if rbErr := tx.Rollback(ctx); rbErr != nil && !errors.Is(rbErr, pgx.ErrTxClosed) {
 			// log rollback error (don’t return it, or you’ll hide the real one)
 			fmt.Printf("rollback failed: %v\n", rbErr)
 		}

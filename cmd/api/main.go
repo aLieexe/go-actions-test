@@ -16,7 +16,6 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
 	config, err := common.Load(".env")
-
 	if err != nil {
 		logger.Error(err.Error())
 	}
@@ -31,7 +30,12 @@ func main() {
 		Config: config,
 	}
 
-	jwtProvider := auth.NewJwtProvider(config.AccessTokenSecret, config.RefreshTokenSecret, time.Duration(config.AccesssTokenTTL), time.Duration(config.RefreshTokenTTL))
+	jwtProvider := auth.NewJwtProvider(
+		config.AccessTokenSecret,
+		config.RefreshTokenSecret,
+		time.Duration(config.AccesssTokenTTL),
+		time.Duration(config.RefreshTokenTTL),
+	)
 	authManager := auth.NewAuthManager(jwtProvider)
 
 	newHandlers := internalHttp.NewHandlers(newModels, *authManager, app)
