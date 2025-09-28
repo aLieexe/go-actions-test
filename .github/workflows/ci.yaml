@@ -27,12 +27,8 @@ jobs:
       - name: Cache Go modules
         uses: actions/cache@v4
         with:
-          # The path to cache is the Go module cache directory
           path: ~/go/pkg/mod
-          # The key is unique to the OS and the contents of go.sum
-          # If go.sum changes, the key changes, and a new cache is created.
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          # A fallback key to use the most recent cache if the exact key isn't found
           restore-keys: |
             ${{ runner.os }}-go-
 
