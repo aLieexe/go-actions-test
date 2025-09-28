@@ -1,10 +1,11 @@
 package http
 
 import (
+	"net/http"
+
 	"jwt-golang/internal/auth"
 	"jwt-golang/internal/common"
 	"jwt-golang/internal/models"
-	"net/http"
 )
 
 type AuthHandlerInterface interface {

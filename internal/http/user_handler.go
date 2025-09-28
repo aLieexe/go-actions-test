@@ -2,10 +2,11 @@ package http
 
 import (
 	"errors"
+	"net/http"
+
 	"jwt-golang/internal/auth"
 	"jwt-golang/internal/common"
 	"jwt-golang/internal/models"
-	"net/http"
 )
 
 type UserHandlerInterface interface {

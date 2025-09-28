@@ -2,10 +2,11 @@ package http
 
 import (
 	"fmt"
+	"net/http"
+
 	"jwt-golang/internal/auth"
 	"jwt-golang/internal/common"
 	"jwt-golang/internal/middlewares"
-	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )

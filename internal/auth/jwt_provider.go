@@ -23,12 +23,7 @@ type CustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func NewJwtProvider(
-	accessTokenSecret string,
-	refreshTokenSecret string,
-	accessTokenTTL time.Duration,
-	refreshTokenTTL time.Duration,
-) *JwtProvider {
+func NewJwtProvider(accessTokenSecret string, refreshTokenSecret string, accessTokenTTL time.Duration, refreshTokenTTL time.Duration) *JwtProvider {
 	return &JwtProvider{
 		accessTokenSecret:  []byte(accessTokenSecret),
 		accessTokenTTL:     accessTokenTTL * time.Second,

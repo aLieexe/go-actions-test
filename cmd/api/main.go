@@ -1,15 +1,16 @@
 package main
 
 import (
+	"log/slog"
+	"net/http"
+	"os"
+	"time"
+
 	"jwt-golang/internal/auth"
 	"jwt-golang/internal/common"
 	internalHttp "jwt-golang/internal/http"
 	"jwt-golang/internal/models"
 	"jwt-golang/internal/services"
-	"log/slog"
-	"net/http"
-	"os"
-	"time"
 )
 
 func main() {

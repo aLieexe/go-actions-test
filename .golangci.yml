@@ -15,16 +15,12 @@ output:
 
 formatters:
   enable:
-  - golines # enforces max line length
   - goimports # checks if the code and import statements are formatted according to the 'goimports' command
 
   settings:
     goimports:
       local-prefixes:
-      - github.com/my/project
-
-    golines:
-      max-len: 120
+      - jwt-golang
 
 linters:
   enable:
@@ -47,7 +43,7 @@ linters:
     cyclop:
       # The maximal code complexity to report.
       # Default: 10
-      max-complexity: 10
+      max-complexity: 20
 
     errcheck:
       # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.

@@ -94,7 +94,10 @@ func (app *Application) ReadJSON(w http.ResponseWriter, r *http.Request, dst any
 
 	// remember dumass, struct{} is only the struct. U need another {} to initialize it
 	// we essentially try to decode again, but here we expect io.EOF instead
-	dec.Decode(&struct{}{})
+	err = dec.Decode(&struct{}{})
+	if err != nil {
+		return err
+	}
 	if !errors.Is(err, io.EOF) {
 		return errors.New("body must only contain a single JSON value")
 	}

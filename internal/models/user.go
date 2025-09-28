@@ -4,9 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"jwt-golang/internal/common"
 	"strings"
 	"time"
+
+	"jwt-golang/internal/common"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"

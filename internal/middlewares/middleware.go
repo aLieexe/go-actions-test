@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"jwt-golang/internal/common"
 	"net/http"
+
+	"jwt-golang/internal/common"
 )
 
 func RecoverPanic(app *common.Application) func(http.Handler) http.Handler {
