@@ -26,13 +26,13 @@ jobs:
 
       - name: Cache Go modules
         uses: actions/cache@v4
+        env:
+          cache-name: go-cache-test
         with:
-          path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          path: ~/go-cache-test
+          key: ${{ runner.os }}-go-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ env.cache-name }}-
 
       - name: Install dependencies
         run: go mod download
@@ -61,13 +61,13 @@ jobs:
 
       - name: Cache Go modules
         uses: actions/cache@v4
+        env:
+          cache-name: go-cache-test
         with:
-          path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          path: ~/go-cache-test
+          key: ${{ runner.os }}-go-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ env.cache-name }}-
 
       - name: Install dependencies
         run: go mod download
