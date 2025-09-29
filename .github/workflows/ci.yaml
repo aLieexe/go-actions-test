@@ -17,24 +17,12 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
           go-version: '1.24.x'
       
       - name: Display Go version
         run: go version
-
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-test
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
 
       - name: Install dependencies
         run: go mod download
@@ -48,35 +36,25 @@ jobs:
           version: latest
           args: --timeout=5m
 
-  # builds:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v5
+  builds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
 
-  #     - name: Set up Go
-  #       uses: actions/setup-go@v6
-  #       with:
-  #         go-version: '1.24.x'
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.24.x'
       
-  #     - name: Display Go version
-  #       run: go version
+      - name: Display Go version
+        run: go version
 
-  #     - name: Cache Go modules
-  #       uses: actions/cache@v4
-  #       env:
-  #         cache-name: go-cache-test
-  #       with:
-  #         path: ~/gocache
-  #         key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
+      - name: Install dependencies
+        run: go mod download
 
-  #     - name: Install dependencies
-  #       run: go mod download
+      - name: Verify dependencies
+        run: go mod verify
 
-  #     - name: Verify dependencies
-  #       run: go mod verify
-
-  #     - name: Build application
-  #       run: go build -ldflags='-s' -o=./bin/api ./cmd/api
+      - name: Build application
+        run: go build -ldflags='-s' -o=./bin/api ./cmd/api
 
