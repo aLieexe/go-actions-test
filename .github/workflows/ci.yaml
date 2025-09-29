@@ -29,10 +29,10 @@ jobs:
         env:
           cache-name: go-cache-test
         with:
-          path: ~/go-cache-test
-          key: ${{ runner.os }}-go-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
+          path: ~/gocache
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
 
       - name: Install dependencies
         run: go mod download
@@ -64,10 +64,10 @@ jobs:
         env:
           cache-name: go-cache-test
         with:
-          path: ~/go-cache-test
-          key: ${{ runner.os }}-go-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
+          path: ~/gocache
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
 
       - name: Install dependencies
         run: go mod download
