@@ -3,3 +3,5 @@ tmp
 .env
 bin
 .envrc
+# Added by goreleaser init:
+dist/
