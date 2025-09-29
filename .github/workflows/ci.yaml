@@ -79,3 +79,4 @@ jobs:
 
   #     - name: Build application
   #       run: go build -ldflags='-s' -o=./bin/api ./cmd/api
+
