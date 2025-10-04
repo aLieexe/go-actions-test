@@ -10,7 +10,7 @@ version: 2
 
 before:
   hooks:
-    # You may remove this if you don't use go modules.
+    # may remove this if you don't use go modules.
     - go mod tidy
 
 builds:
@@ -25,6 +25,33 @@ builds:
     goarch:
       - amd64
       - arm64
+dockers_v2:
+  id: default
+  docekrfile: Dockerfile
+  ids: 
+    - test
+  images:
+    - ghcr.io/aLieexe/{{ .ProjectName }}
+  tags:
+    - "{{ .Version }}-amd64"
+    - "{{ .Version }}-arm64v8"
+    - "{{ .Version }}"
+    - "latest"
+  platforms:
+    - linux/amd64
+    - linux/arm64
+  labels:
+    "org.opencontainers.image.title": "{{ .ProjectName }}"
+    "org.opencontainers.image.description": "Chat will this work?? Or nah??"
+    "org.opencontainers.image.url": "https://github.com/aLieexe/{{ .ProjectName }}"
+    "org.opencontainers.image.source": "https://github.com/aLieexe/{{ .ProjectName }}"
+    "org.opencontainers.image.version": "{{ .Version }}"
+    "org.opencontainers.image.created": "{{ .Date }}"
+    "org.opencontainers.image.revision": "{{ .FullCommit }}"
+    "org.opencontainers.image.licenses": "MIT"
+  retry:
+    attempts: 3
+    delay: 10s
 
 archives:
   - formats: [tar.gz]

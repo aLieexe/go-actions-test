@@ -1,9 +1,22 @@
-FROM golang:1.24-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN go build -o api ./cmd/api
+FROM golang:1.24.4-bookworm AS build
 
-FROM alpine:latest
 WORKDIR /app
-COPY --from=builder /app/api .
-CMD ["./api"]
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -o /app/app_binary ./main.go
+
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+COPY --from=build /app/app_binary .
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates wget && \
+    rm -rf /var/lib/apt/lists/*
+
+CMD ["./app_binary"]
