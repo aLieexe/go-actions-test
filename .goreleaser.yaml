@@ -24,7 +24,7 @@ dockers_v2:
     ids: 
       - test
     images:
-      - ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER | lower }}/{{ .ProjectName }}
+      - ghcr.io/alieexe/{{ .ProjectName }}
     tags:
       - latest
       - "{{ .Tag }}"
@@ -46,7 +46,7 @@ dockers_v2:
       delay: 10s
 
 # https://github.com/goreleaser/example-supply-chain/blob/main/.goreleaser.yaml
-# https://github.com/goreleaser/example-secure/blob/main/.goreleaser.yaml
+# 
 sboms:
   - artifacts: archive
   - id: source
