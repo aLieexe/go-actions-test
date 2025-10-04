@@ -1,22 +1,12 @@
-FROM golang:1.24.4-bookworm AS build
-
-WORKDIR /app
-
-COPY go.mod go.sum ./
-RUN go mod download
-
-COPY . .
-
-RUN go build -o /app/app_binary ./cmd/api/main.go
-
 FROM debian:bookworm-slim
 
 WORKDIR /app
 
-COPY --from=build /app/app_binary .
+# copy the pre-built binary from goreleaser's dist directory
+COPY go-actions-test .
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     rm -rf /var/lib/apt/lists/*
 
-CMD ["./app_binary"]
+CMD ["./go-actions-test"]
