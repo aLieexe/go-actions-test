@@ -1,0 +1,68 @@
+# name: CD
+# on:
+#   push:
+#     branches: 
+#       - main
+#       - fix/*
+#       - feat/*
+#   pull_request:
+#     branches:
+#       - main
+
+
+# jobs:
+#   builds:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v5
+
+#       - name: Set up Go
+#         uses: actions/setup-go@v5
+#         with:
+#           go-version: '1.24.x'
+      
+#       - name: Display Go version
+#         run: go version
+
+#       - name: Install dependencies
+#         run: go mod download
+
+#       - name: Verify dependencies
+#         run: go mod verify
+
+#       - name: Build application
+#         run: go build -ldflags='-s' -o=./bin/api ./cmd/api
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout
+#         uses: actions/checkout@v3
+
+#       - name: Set up WARP
+#         uses: fscarmen/warp-on-actions@v1.1
+#         with:
+#           stack: dual
+
+#       - name: testing ipv6 connection
+#         run: |
+#           curl -m 9 --ipv6 --verbose https://google.com
+
+#       - name: the deployment
+#         uses: appleboy/ssh-action@v1.2.0
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_KEY }}
+#           protocol: tcp6
+#           port: ${{ secrets.SSH_PORT}}
+#           command_timeout: 30s
+#           script: |
+#             whoami
+#             source ~/.nvm/nvm.sh
+#             nvm use node
+#             cd forum-api-dicoding/
+#             git pull
+#             npm install
+#             npm run migrate up
+#             pm2 restart forum-api-dicoding
