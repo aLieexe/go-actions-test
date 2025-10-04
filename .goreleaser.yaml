@@ -18,6 +18,27 @@ builds:
       - amd64
       - arm64
 
+sboms:
+  - artifacts: archive
+  - id: source
+    artifacts: source
+
+checksum:
+  name_template: "checksums.txt"
+
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
+
 dockers_v2:
   - id: default
     dockerfile: Dockerfile
@@ -46,24 +67,6 @@ dockers_v2:
       delay: 10s
 
 # https://github.com/goreleaser/example-supply-chain/blob/main/.goreleaser.yaml
-# 
-sboms:
-  - artifacts: archive
-  - id: source
-    artifacts: source
-
-signs:
-  - cmd: cosign
-    certificate: "${artifact}.pem"
-    args:
-      - sign-blob
-      - "--output-certificate=${certificate}"
-      - "--output-signature=${signature}"
-      - "${artifact}"
-      - "--yes"
-    artifacts: checksum
-    output: true
-
 docker_signs:
   - cmd: cosign
     output: true
@@ -101,5 +104,3 @@ changelog:
       - '^perf:'
       - '^build:'
 
-checksum:
-  name_template: "checksums.txt"

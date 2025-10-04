@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /app/app_binary ./main.go
+RUN go build -o /app/app_binary ./cmd/api/main.go
 
 FROM debian:bookworm-slim
 
