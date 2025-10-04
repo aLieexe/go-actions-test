@@ -24,7 +24,7 @@ dockers_v2:
     ids: 
       - test
     images:
-      - ghcr.io/aLieexe/{{ .ProjectName }}
+      - ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER | lower }}/{{ .ProjectName }}
     tags:
       - latest
       - "{{ .Tag }}"
