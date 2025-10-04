@@ -1,11 +1,3 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
-
-# The lines below are called `modelines`. See `:help modeline`
-# Feel free to remove those if you don't want/need to use them.
-# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
-# vim: set ts=2 sw=2 tw=0 fo=cnqoj
-
 version: 2
 
 before:
@@ -34,10 +26,9 @@ dockers_v2:
     images:
       - ghcr.io/aLieexe/{{ .ProjectName }}
     tags:
-      - "{{ .Version }}-amd64"
-      - "{{ .Version }}-arm64v8"
-      - "{{ .Version }}"
-      - "latest"
+      - latest
+      - "{{ .Tag }}"
+    # This is already the default but, whatever
     platforms:
       - linux/amd64
       - linux/arm64
@@ -53,6 +44,34 @@ dockers_v2:
     retry:
       attempts: 3
       delay: 10s
+
+# https://github.com/goreleaser/example-supply-chain/blob/main/.goreleaser.yaml
+# https://github.com/goreleaser/example-secure/blob/main/.goreleaser.yaml
+sboms:
+  - artifacts: archive
+  - id: source
+    artifacts: source
+
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
+docker_signs:
+  - cmd: cosign
+    output: true
+    args:
+      - "sign"
+      - "${artifact}"
+      - "--yes"
+
 
 archives:
   - formats: [tar.gz]
