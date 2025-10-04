@@ -28,7 +28,7 @@ builds:
 
 dockers_v2:
   - id: default
-    docekrfile: Dockerfile
+    dockerfile: Dockerfile
     ids: 
       - test
     images:
