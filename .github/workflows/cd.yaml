@@ -27,6 +27,7 @@ jobs:
           curl -m 9 --ipv6 --verbose https://google.com
 
       - name: the deployment
+        timeout-minutes: 10
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.IPV6_VPS }}
