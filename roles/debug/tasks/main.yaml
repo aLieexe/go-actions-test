@@ -2,10 +2,6 @@
   ansible.builtin.debug:
     msg: "Successfully connected to {{ ansible_host }}"
 
-- name: Force failure
-  ansible.builtin.fail:
-    msg: "Intentional failure for testing."
-
 - name: Get system information
   debug: msg="{{ item }}"
   with_items: 
@@ -13,3 +9,4 @@
   - "{{ ansible_distribution_version }}"
   - "{{ ansible_all_ipv4_addresses }}"
   - "{{ ansible_facts.os_family }}"
+  - "{{ ansible_user }}"

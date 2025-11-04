@@ -1,4 +1,0 @@
-- name: Restart SSH socket
-  ansible.builtin.systemd_service:
-    name: ssh.socket
-    state: restarted
