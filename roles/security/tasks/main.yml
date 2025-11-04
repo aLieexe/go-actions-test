@@ -1,0 +1,129 @@
+# Setup, Installation etc
+- include_tasks: Debian-setup.yml
+  when: ansible_facts.os_family == 'Debian'
+
+
+# SSH
+- name: Ensure /etc/ssh exists
+  ansible.builtin.file:
+    path: /etc/ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Ensure backup directory exists
+  ansible.builtin.file:
+    path: /etc/ssh/bak
+    state: directory
+    mode: '0755'
+
+- name: Backup sshd_config before editing
+  ansible.builtin.copy:
+    src: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config.bak
+    remote_src: yes
+
+- name: Deploy sshd_config
+  ansible.builtin.template:
+    src: "sshd_config.j2"
+    dest: "/etc/ssh/sshd_config"
+
+- name: Force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart ssh service
+  ansible.builtin.systemd_service:
+    name: ssh.service
+    state: restarted
+  notify: Restart SSH socket
+
+# Check, turn off to pass idempotent check
+- name: Get status of ssh
+  ansible.builtin.command: systemctl status ssh.service
+  register: ssh_status
+
+- name: Print ssh status output
+  ansible.builtin.debug:
+    var: ssh_status.stdout
+
+
+
+# Automated Updates
+- name: Install unattended upgrades package.
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    state: present
+
+- name: Copy unattended-upgrades configuration files in place.
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/apt/apt.conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 20auto-upgrades
+    - 50unattended-upgrades
+
+
+# UFW
+- name: Configure open ports with UFW
+  community.general.ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop:
+    - { rule: 'allow', port: 22, proto: 'tcp' }   # SSH
+    - { rule: 'allow', port: 80, proto: 'tcp' }   # HTTP
+    - { rule: 'allow', port: 123, proto: 'udp' }  # NTP
+
+- name: Configure default incoming/outgoing rules with UFW
+  community.general.ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+    state: enabled
+  loop:
+    - { direction: outgoing, policy: allow }
+    - { direction: incoming, policy: deny }
+
+
+# Fail2ban
+# TODO: Add config http://www.fail2ban.org/wiki/index.php/MANUAL_0_8
+- name: Ensure fail2ban is running and enabled on boot.
+  ansible.builtin.service:
+    name: fail2ban
+    state: started 
+    enabled: yes
+
+
+# SELinux https://wiki.debian.org/SELinux/Setup, https://major.io/p/getting-started-with-selinux/, https://cycle.io/learn/selinux-basics
+- name: Install SELinux packages on Debian
+  ansible.builtin.apt:
+    name:
+      - selinux-basics
+      - selinux-policy-default
+      - policycoreutils
+    state: present
+    update_cache: true
+
+- name: Enable SELinux in enforcing mode with default policy
+  ansible.builtin.command: selinux-activate
+  args:
+    creates: /etc/selinux/config
+
+# Why not put it in enforcing you ask? Im too lazy to learn other usecase and what may be blocked therefore turn on on your own risk  :D
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: default
+    state: permissive
+
+
+# This require some reading comprehension, please refer to https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/part_ii-managing_confined_services
+- name: Ensure httpd can connect to the network.
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+  when: ansible_selinux.status == 'enabled'

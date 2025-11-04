@@ -1,0 +1,8 @@
+- name: Run the equivalent of "apt-get update" as a separate step
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Ensure ssh is installed in the first place
+  ansible.builtin.apt:
+    pkg: "{{ package_needed }}"
+    state: present

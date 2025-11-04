@@ -1,0 +1,7 @@
+ssh_port: 2222
+
+package_needed: 
+  - openssh-server
+  - unattended-upgrades
+  - ufw
+  - fail2ban

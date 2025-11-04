@@ -1,0 +1,6 @@
+project_name: tsukatsuki-test
+local_project_path: /home/alie/code/golang/tsukatsuki-test
+remote_project_path: /home/tsukatsuki/tsukatsuki
+generated_folder_name: deploy
+ssh_key_folder_name: "key"
+compose_file_name: "docker-compose.yaml"

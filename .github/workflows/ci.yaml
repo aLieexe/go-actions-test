@@ -11,50 +11,71 @@ on:
 
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+    molecule-test: 
+      runs-on: ubuntu-latest
+      steps: 
+        - uses: actions/checkout@v5
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.x'
+        - name: Set up Python 3.
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.x'
+
+        - name: Install test dependencies.
+          run: pip3 install ansible molecule molecule-plugins[docker] docker
+
+        - name: Run Molecule tests.
+          run: molecule test
+          env:
+            PY_COLORS: '1'
+            ANSIBLE_FORCE_COLOR: '1'
+            MOLECULE_DISTRO: ${{ matrix.distro }}
+
+
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v5
+
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v5
+  #       with:
+  #         go-version: '1.24.x'
       
-      - name: Display Go version
-        run: go version
+  #     - name: Display Go version
+  #       run: go version
 
-      - name: Install dependencies
-        run: go mod download
+  #     - name: Install dependencies
+  #       run: go mod download
 
-      - name: Verify dependencies
-        run: go mod verify
+  #     - name: Verify dependencies
+  #       run: go mod verify
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
-        with:
-          version: latest
-          args: --timeout=5m
+  #     - name: golangci-lint
+  #       uses: golangci/golangci-lint-action@v8
+  #       with:
+  #         version: latest
+  #         args: --timeout=5m
 
-  builds:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+  # builds:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v5
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.x'
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v5
+  #       with:
+  #         go-version: '1.24.x'
       
-      - name: Display Go version
-        run: go version
+  #     - name: Display Go version
+  #       run: go version
 
-      - name: Install dependencies
-        run: go mod download
+  #     - name: Install dependencies
+  #       run: go mod download
 
-      - name: Verify dependencies
-        run: go mod verify
+  #     - name: Verify dependencies
+  #       run: go mod verify
 
-      - name: Build application
-        run: go build -ldflags='-s' -o=./bin/api ./cmd/api
+  #     - name: Build application
+  #       run: go build -ldflags='-s' -o=./bin/api ./cmd/api
 

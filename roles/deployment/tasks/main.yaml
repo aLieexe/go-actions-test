@@ -1,0 +1,21 @@
+- name: Sync all the project folder to home
+  ansible.posix.synchronize:
+    src: "{{ local_project_path }}/"
+    dest: "{{ remote_project_path }}"
+    rsync_opts:
+      - "--exclude-from={{ local_project_path }}/{{ generated_folder_name }}/conf/.rsyncignore"
+      - "--no-motd"
+      - "--recursive"
+      - "--times"
+      - "--links"
+      - "--compress"
+      - "--delete"
+  become: false
+
+- name: Deploy application with Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ remote_project_path }}/{{ generated_folder_name }}/conf" 
+    files: 
+      - "{{ compose_file_name }}"
+    state: present
+

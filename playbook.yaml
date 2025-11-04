@@ -1,0 +1,4 @@
+- hosts: setup
+  become: true
+  roles:
+  - common
