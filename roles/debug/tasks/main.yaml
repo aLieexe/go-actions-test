@@ -2,6 +2,10 @@
   ansible.builtin.debug:
     msg: "Successfully connected to {{ ansible_host }}"
 
+- name: Force failure
+  ansible.builtin.fail:
+    msg: "Intentional failure for testing."
+
 - name: Get system information
   debug: msg="{{ item }}"
   with_items: 
