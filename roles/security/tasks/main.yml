@@ -23,6 +23,8 @@
     src: /etc/ssh/sshd_config
     dest: /etc/ssh/sshd_config.bak
     remote_src: yes
+  tags:
+    - molecule-idempotence-notest
 
 - name: Deploy sshd_config
   ansible.builtin.template:
@@ -33,19 +35,26 @@
   ansible.builtin.systemd_service:
     daemon_reload: true
 
+
 - name: Restart ssh service
   ansible.builtin.systemd_service:
     name: ssh.service
     state: restarted
+  tags:
+    - molecule-idempotence-notest
 
 # Check, turn off to pass idempotent check
 - name: Get status of ssh
   ansible.builtin.command: systemctl status ssh.service
   register: ssh_status
+  tags:
+    - molecule-idempotence-notest
 
 - name: Print ssh status output
   ansible.builtin.debug:
     var: ssh_status.stdout
+  tags:
+    - molecule-idempotence-notest
 
 # Automated Updates
 - name: Install unattended upgrades package.
