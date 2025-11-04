@@ -13,6 +13,12 @@ on:
 jobs:
     molecule-test: 
       runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          distro:
+            - ubuntu2404
+            - debian13
+
       steps: 
         - uses: actions/checkout@v5
 
@@ -24,11 +30,12 @@ jobs:
         - name: Install test dependencies.
           run: pip3 install ansible molecule molecule-plugins[docker] docker
 
+        - name: Debug
+          run: pwd
+
         - name: Run Molecule tests.
           run: molecule test
           env:
-            PY_COLORS: '1'
-            ANSIBLE_FORCE_COLOR: '1'
             MOLECULE_DISTRO: ${{ matrix.distro }}
 
 
