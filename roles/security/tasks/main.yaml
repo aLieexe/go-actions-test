@@ -98,6 +98,11 @@
     - { direction: outgoing, policy: allow }
     - { direction: incoming, policy: deny }
 
+- name: Change ssh port to 8888
+  ansible.builtin.set_fact:
+    ansible_port: 2222
+
+
 
 # Fail2ban
 # TODO: Add config http://www.fail2ban.org/wiki/index.php/MANUAL_0_8
@@ -109,16 +114,15 @@
 
 
 # SELinux https://wiki.debian.org/SELinux/Setup, https://major.io/p/getting-started-with-selinux/, https://cycle.io/learn/selinux-basics
-- name: Enable SELinux in enforcing mode with default policy
+- name: 2. Run selinux-activate (Debian-family)
   ansible.builtin.command: selinux-activate
-  args:
-    creates: /etc/selinux/config
-
+  
 # Why not put it in enforcing you ask? Im too lazy to learn other usecase and what may be blocked therefore turn on on your own risk  :D
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   ansible.posix.selinux:
     policy: default
     state: permissive
+  register: selinux_config
 
 
 # This require some reading comprehension, please refer to https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/part_ii-managing_confined_services
@@ -134,3 +138,4 @@
   ansible.builtin.reboot:
   tags: 
   - molecule-notest
+  when: selinux_config.reboot_required
