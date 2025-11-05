@@ -6,6 +6,6 @@ bin
 # Added by goreleaser init:
 dist/
 # BEGIN Tsukatsuki Managed Block
-key/
+key
 .ansible/
 # END Tsukatsuki Managed Block
