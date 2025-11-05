@@ -39,6 +39,13 @@
   community.general.ufw:
     state: enabled
 
+# Used in the case of if user is a root user, useful in minimal installation
+# SSH by default did not permit any root login, therefore this probbaly only gonna be used during molecule testing, teehee
+- name: Create a setup user
+  ansible.builtin.include_tasks:
+    file: setup-user.yaml
+  when: ansible_user == "root" 
+
 - name: Create a user
   ansible.builtin.user:
     name: "{{ hostvars['deploy_user'].ansible_user }}"

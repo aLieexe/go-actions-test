@@ -1,4 +1,4 @@
 - hosts: setup
   become: true
   roles:
-  - security
+  - common

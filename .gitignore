@@ -5,3 +5,7 @@ bin
 .envrc
 # Added by goreleaser init:
 dist/
+# BEGIN Tsukatsuki Managed Block
+key/
+.ansible/
+# END Tsukatsuki Managed Block
