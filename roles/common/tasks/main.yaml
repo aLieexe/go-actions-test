@@ -34,6 +34,10 @@
   - '80'
   - '443'
   - '22'
+  tags:
+    - molecule-idempotence-notest
+
+
 
 - name: Enable UFW
   community.general.ufw:

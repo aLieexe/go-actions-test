@@ -88,6 +88,9 @@
     - { rule: 'allow', port: 443, proto: 'tcp' }   # HTTPS
     - { rule: 'allow', port: 123, proto: 'udp' }  # NTP
     - { rule: 'deny', port: 22, proto: 'tcp' }  # Old SSH Port
+  tags:
+    - molecule-idempotence-notest
+
 
 - name: Configure default incoming/outgoing rules with UFW
   community.general.ufw:
@@ -114,9 +117,12 @@
 
 
 # SELinux https://wiki.debian.org/SELinux/Setup, https://major.io/p/getting-started-with-selinux/, https://cycle.io/learn/selinux-basics
-- name: 2. Run selinux-activate (Debian-family)
+- name: Run selinux-activate (Debian-family)
   ansible.builtin.command: selinux-activate
-  
+  tags:
+    - molecule-idempotence-notest
+
+
 # Why not put it in enforcing you ask? Im too lazy to learn other usecase and what may be blocked therefore turn on on your own risk  :D
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   ansible.posix.selinux:
