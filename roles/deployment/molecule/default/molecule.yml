@@ -4,11 +4,7 @@ driver:
   name: docker
 platforms:
 - name: instance
-  image: geerlingguy/docker-ubuntu2404-ansible:latest
-  # image: geerlingguy/docker-rockylinux10-ansible:latest
-  # image: geerlingguy/docker-opensuseleap15-ansible:latest
-  # image: geerlingguy/docker-debian13-ansible:latest
- 
+  image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian13}-ansible:latest"
   pre_build_image: true
   privileged: true
   volumes:
