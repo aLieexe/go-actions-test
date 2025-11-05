@@ -2,7 +2,7 @@
   ansible.builtin.apt:
     update_cache: yes
 
-- name: Ensure ssh is installed in the first place
+- name: Install all the packages neeeded using apt
   ansible.builtin.apt:
     pkg: "{{ package_needed }}"
     state: present

@@ -6,3 +6,5 @@
   - ../../group_vars/all.yaml
   roles: 
     - role: ../../roles/common
+    - role: ../../roles/security
+

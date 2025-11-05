@@ -5,3 +5,6 @@ package_needed:
   - unattended-upgrades
   - ufw
   - fail2ban
+  - selinux-basics
+  - selinux-policy-default
+  - policycoreutils
