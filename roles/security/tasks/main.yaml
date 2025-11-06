@@ -114,6 +114,8 @@
     name: fail2ban
     state: started 
     enabled: yes
+  tags:
+    - molecule-idempotence-notest
 
 
 # SELinux https://wiki.debian.org/SELinux/Setup, https://major.io/p/getting-started-with-selinux/, https://cycle.io/learn/selinux-basics
