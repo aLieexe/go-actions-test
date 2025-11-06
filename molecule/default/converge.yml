@@ -5,9 +5,9 @@
   vars_files: 
   - ../../group_vars/all.yaml
   roles: 
-    - role: ../../roles/debug
-    # - role: ../../roles/common
-    # - role: ../../roles/security
+    # - role: ../../roles/debug
+    - role: ../../roles/common
+    - role: ../../roles/security
     - role: ../../roles/docker
-    # - role: ../../roles/deployment
+    - role: ../../roles/deployment
 
