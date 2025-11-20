@@ -39,3 +39,4 @@ jobs:
           cd go-actions-test
           git pull
           docker compose up -d
+
