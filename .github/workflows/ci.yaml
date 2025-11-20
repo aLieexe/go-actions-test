@@ -33,10 +33,12 @@ jobs:
           run: pip3 install ansible molecule molecule-plugins[docker] docker
 
         - name: Debug
+          working-directory: ./deploy/ansible
           run: pwd
 
         - name: Run Molecule tests.
           run: molecule test
+          working-directory: ./deploy/ansible
           env:
             PY_COLORS: '1'
             ANSIBLE_FORCE_COLOR: '1'
