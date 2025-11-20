@@ -38,6 +38,7 @@ jobs:
         host: ${{ secrets.SSH_IP }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+        protocol: tcp6
         port: 22
         script: |
           whoami
