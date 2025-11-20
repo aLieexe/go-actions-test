@@ -24,6 +24,25 @@ jobs:
 
     # - name: Save image to file
     #   run: docker save myapp:latest -o myapp.tar
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build image as tar
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: ./Dockerfile
+        tags: myapp:latest
+        outputs: type=docker,dest=./app.tar
+
+    - name: Copy tar to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_IP }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "app.tar"
+        target: "~/go-actions-test/"
 
     - name: the deployment
       timeout-minutes: 10
@@ -35,8 +54,8 @@ jobs:
         protocol: tcp6
         port: 22
         script: |
-          whoami
           cd go-actions-test
           git pull
-          ls
+          docker load -i app.tar
+          docker compose up -d
 
