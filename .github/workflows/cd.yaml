@@ -38,5 +38,5 @@ jobs:
           whoami
           cd go-actions-test
           git pull
-          docker compose up -d
+          ls
 
