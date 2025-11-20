@@ -29,10 +29,10 @@ jobs:
       timeout-minutes: 10
       uses: appleboy/ssh-action@v1.2.0
       with:
-        host: "[${{ secrets.SSH_IP }}]"
+        host: "${{ secrets.SSH_IP }}"
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
-        protocol: tcp
+        protocol: tcp6
         port: 22
         script: |
           whoami
